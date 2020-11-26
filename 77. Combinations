@@ -1,0 +1,37 @@
+// 77. Combinations
+
+class Solution {
+    void helper(const vector<int>& inputArr, int curIdx, const int k, vector<int>& oneRst, vector<vector<int>>& allRst) {
+        calledTimes++;
+        if (oneRst.size() == k) {
+            allRst.push_back(oneRst);
+            return;
+        } // BUGGY : This should be in the beginning
+
+        if ( k - oneRst.size() > inputArr.size() - curIdx) {
+            return;
+        } // To cut some branches early. e.g. n = 10, k = 6
+
+        for (int idx = curIdx; idx < inputArr.size(); idx++) {
+            oneRst.push_back(inputArr[idx]);
+            helper(inputArr, idx + 1, k, oneRst, allRst);
+            oneRst.pop_back();
+        }
+    }
+public:
+    Solution() {
+    }
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> inputArr;
+        for (int i = 1; i <= n; i++) {
+            inputArr.push_back(i);
+        }
+
+        vector<int> oneRst;
+        vector<vector<int>> allRst;
+        helper(inputArr, 0, k, oneRst, allRst);
+
+
+        return allRst;
+    }
+};
