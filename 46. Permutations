@@ -1,0 +1,26 @@
+// add a new element each time
+class Solution {
+    void helper( const vector<int>& nums, vector<bool>& usedArr, vector<int>& oneRst, vector<vector<int>>& allRst) {
+        if (oneRst.size() == nums.size()) {
+            allRst.push_back(oneRst);
+            return;
+        }
+        for (size_t i = 0; i < nums.size(); i++) {
+            if (usedArr[i]) continue;
+            oneRst.push_back(nums[i]);
+            usedArr[i] = true;
+            helper(nums, usedArr, oneRst, allRst);
+            oneRst.pop_back();
+            usedArr[i] = false;
+        }
+    }
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> allRst;
+        vector<bool> usedArr(nums.size(), false);
+        vector<int> oneRst;
+        helper(nums, usedArr, oneRst, allRst);
+
+        return allRst;
+    }
+};
