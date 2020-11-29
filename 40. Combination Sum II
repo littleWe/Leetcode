@@ -1,0 +1,28 @@
+
+class Solution {
+    void helper(const vector<int>& candidates, int curLeftTarget, int startIdx, vector<int>& oneRst, vector<vector<int>>& allRst) {
+        if (curLeftTarget == 0) {
+            allRst.push_back(oneRst);
+            return;
+        }
+        
+        for (int idx = startIdx; idx < candidates.size(); idx++) {
+            if (idx > startIdx && candidates[idx] == candidates[idx-1]) continue;
+            if (candidates[idx] > curLeftTarget) break;
+
+            oneRst.push_back(candidates[idx]);
+            helper(candidates, curLeftTarget - candidates[idx], idx + 1, oneRst, allRst);
+            oneRst.pop_back();
+        }
+    }
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+
+        vector<int> oneRst;
+        vector<vector<int>> allRst;
+        helper(candidates, target, 0, oneRst, allRst);
+
+        return allRst;
+    }
+};
