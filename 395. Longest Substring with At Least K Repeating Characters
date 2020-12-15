@@ -1,0 +1,40 @@
+// Solution 1 Recursion
+https://www.cnblogs.com/grandyang/p/5852352.html
+
+// Solution 2 Sliding Window
+class Solution {
+public:
+    int longestSubstring(string str, int K) {
+        const int N = str.size();
+        int rst = 0;
+
+        for (int numUniqueChars = 1; numUniqueChars <= 26; numUniqueChars++) {
+            vector<int> charCntMap(26, 0);
+            for (int left = 0, right = 0, curUniqueChars = 0, curNoLessThanK = 0; right < N; right++) {
+                char rightCh = str[right];
+                if (charCntMap[rightCh - 'a']++ == 0) {
+                    curUniqueChars++;
+                }
+                if (charCntMap[rightCh - 'a'] == K) {
+                    curNoLessThanK++;
+                }
+                while (curUniqueChars > numUniqueChars) {
+                    char leftCh = str[left];
+                    if (--charCntMap[leftCh - 'a'] == 0) {
+                        curUniqueChars--;
+                    }
+                    if (charCntMap[leftCh - 'a'] == K - 1) {
+                        curNoLessThanK--;
+                    }
+                    left++;
+                }
+                if (curNoLessThanK == curUniqueChars) {
+                    rst = max(rst, right - left + 1);
+                }
+            }
+        }
+
+        return rst;
+    }
+};
+
